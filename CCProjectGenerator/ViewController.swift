@@ -28,9 +28,9 @@ class ViewController: NSViewController {
         view.layer = viewLayer
         
         // Color label
-        chipmunkCheckbox.attributedTitle = AttributedString(string: chipmunkCheckbox.title, attributes: [NSForegroundColorAttributeName : NSColor.white])
+        chipmunkCheckbox.attributedTitle = AttributedString(string: chipmunkCheckbox.title, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : NSColor.white]))
         
-        ccbCheckbox.attributedTitle = AttributedString(string: ccbCheckbox.title, attributes: [NSForegroundColorAttributeName : NSColor.white])
+        ccbCheckbox.attributedTitle = AttributedString(string: ccbCheckbox.title, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : NSColor.white]))
     }
 
     override var representedObject: Any? {
@@ -43,8 +43,8 @@ class ViewController: NSViewController {
     @IBAction func createButtonPressed(_ sender: AnyObject) {
         let saveDialog = NSSavePanel()
         
-        saveDialog.beginSheetModal(for: NSApplication.shared().mainWindow!) { (result: Int) -> Void in
-            if result == NSModalResponseOK {
+        saveDialog.beginSheetModal(for: NSApplication.shared.mainWindow!) { (result: Int) -> Void in
+            if result == NSApplication.ModalResponse.OK {
                 var fileName = saveDialog.url!.path
                 let fileNameRaw = (fileName as NSString).deletingPathExtension
                 
@@ -71,3 +71,14 @@ class ViewController: NSViewController {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
