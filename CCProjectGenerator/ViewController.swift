@@ -43,7 +43,7 @@ class ViewController: NSViewController {
     @IBAction func createButtonPressed(_ sender: AnyObject) {
         let saveDialog = NSSavePanel()
         
-        saveDialog.beginSheetModal(for: NSApplication.shared.mainWindow!) { (result: Int) -> Void in
+        saveDialog.beginSheetModal(for: NSApplication.shared.mainWindow!) { (result: NSApplication.ModalResponse) -> Void in
             if result == NSApplication.ModalResponse.OK {
                 var fileName = saveDialog.url!.path
                 let fileNameRaw = (fileName as NSString).deletingPathExtension
@@ -61,7 +61,7 @@ class ViewController: NSViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC), execute: { () -> Void in
                         let lang = CCBProgrammingLanguage(rawValue: Int8(self.langSelector.selectedItem!.tag))
-                        CCBProjectCreator.createDefaultProject(atPath: fileName, withChipmunk: self.chipmunkCheckbox.state == NSOnState, withCCB: self.ccbCheckbox.state == NSOnState, programmingLanguage:lang!)
+                        CCBProjectCreator.createDefaultProject(atPath: fileName, withChipmunk: self.chipmunkCheckbox.state == NSControl.StateValue.on, withCCB: self.ccbCheckbox.state == NSControl.StateValue.on, programmingLanguage:lang!)
                     })
                     
                 }
